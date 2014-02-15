@@ -1139,13 +1139,11 @@ class GTEST_TEST_CLASS_NAME_(test_case_name, test_name) : public parent_class {\
   GTEST_TEST_CLASS_NAME_(test_case_name, test_name)() {}\
  private:\
   virtual void TestBody();\
-  static ::testing::TestInfo* const test_info_ GTEST_ATTRIBUTE_UNUSED_;\
   GTEST_DISALLOW_COPY_AND_ASSIGN_(\
       GTEST_TEST_CLASS_NAME_(test_case_name, test_name));\
 };\
-\
-::testing::TestInfo* const GTEST_TEST_CLASS_NAME_(test_case_name, test_name)\
-  ::test_info_ =\
+namespace {\
+::testing::TestInfo* const test_case_name##_##test_name##_test_info_ =\
     ::testing::internal::MakeAndRegisterTestInfo(\
         #test_case_name, #test_name, NULL, NULL, \
         (parent_id), \
@@ -1153,6 +1151,7 @@ class GTEST_TEST_CLASS_NAME_(test_case_name, test_name) : public parent_class {\
         parent_class::TearDownTestCase, \
         new ::testing::internal::TestFactoryImpl<\
             GTEST_TEST_CLASS_NAME_(test_case_name, test_name)>);\
-void GTEST_TEST_CLASS_NAME_(test_case_name, test_name)::TestBody()
+}\
+inline void GTEST_TEST_CLASS_NAME_(test_case_name, test_name)::TestBody()
 
 #endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_INTERNAL_H_
