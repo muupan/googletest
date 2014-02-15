@@ -2421,6 +2421,12 @@ TestInfo* TestCase::GetMutableTestInfo(int i) {
 // Adds a test to this test case.  Will delete the test upon
 // destruction of the TestCase object.
 void TestCase::AddTestInfo(TestInfo * test_info) {
+  for (std::vector<TestInfo*>::const_iterator it = test_info_list_.begin(); it != test_info_list_.end(); ++it) {
+    if (std::strcmp((*it)->name(), test_info->name()) == 0) {
+      // If a test with the same name has already been added, just return.
+      return;
+    }
+  }
   test_info_list_.push_back(test_info);
   test_indices_.push_back(static_cast<int>(test_indices_.size()));
 }
